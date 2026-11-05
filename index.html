@@ -1,841 +1,229 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrueRatings | Управление репутацией (ORM)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#0f172a',
-                            900: '#0b1329',
-                            950: '#060a17',
-                        },
-                        brand: {
-                            blue: '#0284c7',
-                            cyan: '#06b6d4',
-                            lightCyan: '#38bdf8',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Manrope', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        body {
-            font-family: 'Manrope', sans-serif;
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-        .glass-header {
-            background: rgba(11, 19, 41, 0.85);
-            backdrop-filter: blur(12px);
-        }
-        .gradient-text {
-            background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .gradient-bg {
-            background: linear-gradient(135deg, #0b1329 0%, #0f2546 100%);
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
-            height: 280px;
-        }
-        input[type="range"]::-webkit-slider-runnable-track {
-            width: 100%;
-            height: 10px;
-            background: #e2e8f0;
-            border-radius: 5px;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 26px;
-            width: 26px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #38bdf8, #0284c7);
-            cursor: pointer;
-            margin-top: -8px;
-            box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScamLens - Spot Scams Before They Cost You</title>
+<meta name="description" content="ScamLens is an explainable AI-powered scam detection platform for Windows. Check suspicious messages, screenshots, and URLs, understand scam indicators, and get safe action recommendations.">
+<meta name="keywords" content="ai, ai-security, artificial-intelligence, cybersecurity, digital-safety, fastapi, fraud-detection, hackathon, hackathon-project, nextjs, nlp, ocr, phishing-detection, python, risk-assessment, scam-detection, security, social-engineering, threat-detection">
+<meta name="author" content="ScamLens">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta property="og:description" content="A simple Windows app that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/iyanhermawan12/ScamLens/releases">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta name="twitter:description" content="A simple Windows app that checks suspicious messages, screenshots, and links,<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScamLens - Spot Scams Before They Cost You</title>
+<meta name="description" content="ScamLens is an explainable AI-powered scam detection platform for Windows. Check suspicious messages, screenshots, and URLs, understand scam indicators, and get safe action recommendations.">
+<meta name="keywords" content="ai, ai-security, artificial-intelligence, cybersecurity, digital-safety, fastapi, fraud-detection, hackathon, hackathon-project, nextjs, nlp, ocr, phishing-detection, python, risk-assessment, scam-detection, security, social-engineering, threat-detection">
+<meta name="author" content="ScamLens">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta property="og:description" content="A simple Windows app that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/iyanhermawan12/ScamLens/releases">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta name="twitter:description" content="A simple Windows app that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
 </head>
-<body class="antialiased selection:bg-brand-cyan selection:text-white">
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; line-height:1.7;">
+<div style="max-width:900px; margin:0 auto; padding:24px 18px 56px;">
 
-    <!-- Header -->
-    <header class="fixed top-0 w-full z-50 glass-header border-b border-slate-800/80 transition-all">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- Logo Block -->
-            <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-blue to-brand-cyan flex items-center justify-center text-white shadow-lg shadow-brand-blue/30 group-hover:scale-105 transition transform">
-                    <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <path d="m9 12 2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div>
-                    <span class="block font-black text-xl tracking-tight text-white leading-none">TrueRatings <span class="text-brand-lightCyan font-semibold text-sm">ORM</span></span>
-                    <span class="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Управление репутацией</span>
-                </div>
-            </a>
+<header style="text-align:center; padding:24px 0 10px;">
+<h1 style="font-size:clamp(1.8rem,4vw,2.6rem); line-height:1.2; margin:0 0 14px; color:#0f172a; letter-spacing:-0.5px;">🛡️ ScamLens - Spot Scams Before They Cost You</h1>
+<p style="font-size:1.08rem; margin:0 auto 22px; max-width:760px; color:#475569;">ScamLens is an explainable AI-powered scam detection platform that analyzes suspicious messages, screenshots, and URLs to identify scam indicators, explain the risks, and recommend safe actions.</p>
+<p style="margin:0 0 10px;"><a href="https://github.com/iyanhermawan12/ScamLens/releases" style="display:inline-block; padding:16px 28px; border-radius:14px; background:linear-gradient(135deg,#7c3aed,#0ea5e9,#14b8a6); color:#ffffff; text-decoration:none; font-weight:800; font-size:1.02rem; box-shadow:0 14px 30px rgba(14,165,233,0.28); letter-spacing:0.2px;">Download ScamLens for Windows</a></p>
+<p style="font-size:0.95rem; color:#64748b; margin:8px 0 0;">No programming knowledge needed. Visit this link to download the application.</p>
+</header>
 
-            <!-- Navigation Links -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm font-semibold text-slate-300">
-                <a href="#platforms" class="hover:text-brand-lightCyan transition">Площадки</a>
-                <a href="#calculator" class="hover:text-brand-lightCyan transition">Калькулятор</a>
-                <a href="#pricing" class="hover:text-brand-lightCyan transition">Цены</a>
-                <a href="#how-it-works" class="hover:text-brand-lightCyan transition">Как работаем</a>
-                <a href="#faq" class="hover:text-brand-lightCyan transition">FAQ</a>
-            </nav>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🔍 What ScamLens Does</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens helps you look more closely at content that feels suspicious. It reviews messages, screenshots, and links, finds common scam signals, and explains the risk in everyday language. Instead of only showing a warning, it helps you understand why something looks unsafe and what you can do next.</p>
+<p style="margin:0; color:#334155;">You can use ScamLens when you receive an unexpected text, email, direct message, marketplace offer, delivery notice, bank alert, job offer, or link that asks you to act quickly. The app is designed to support everyday digital safety decisions on Windows.</p>
+</section>
 
-            <!-- Audit CTA Button -->
-            <div class="flex items-center space-x-3">
-                <a href="https://max.ru/u/f9LHodD0cOJTUxKcO6hOfEfN1hzsKA6Q9ZY7I5OE8WGgI9IVYWYvtoTFOwY" target="_blank" class="hidden sm:inline-flex items-center space-x-2 bg-gradient-to-r from-brand-blue to-brand-cyan hover:from-brand-blue hover:to-brand-blue text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-brand-blue/20 transition duration-300 transform hover:-translate-y-0.5">
-                    <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M50.76 0c27.53 0 49.12 22.34 49.12 49.89S77.61 99.23 51.02 99.23c-9.43 0-14.01-1.33-21.37-6.54-.5-.36-1.2-.26-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03C7.19 80.53 0 71.18 0 49.61 0 21.3 23.22 0 50.76 0m.77 24.55c-13.07-.68-23.26 8.39-25.51 22.58-1.86 11.75 1.44 26.07 4.26 26.8 1.2.3 4.08-1.9 6.18-3.88.4-.37.99-.44 1.45-.15 3.27 2 6.97 3.5 11.05 3.71 13.42.7 25.3-9.8 26-23.21.71-13.42-10.01-25.14-23.43-25.85" fill="currentColor"/>
-                    </svg>
-                    <span>Бесплатный аудит в Max</span>
-                </a>
-            </div>
-        </div>
-    </header>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">💡 Why This Matters</h2>
+<p style="margin:0 0 12px; color:#334155;">Scams often rely on pressure. A message may pretend to be from a bank, a delivery company, a government office, a landlord, an employer, or an online seller. It may ask you to click a link, pay a fee, share a code, confirm a password, or send personal details. These requests can be easy to miss when you are busy or worried.</p>
+<p style="<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScamLens - Spot Scams Before They Cost You</title>
+<meta name="description" content="ScamLens is an explainable AI-powered scam detection platform for Windows. Check suspicious messages, screenshots, and URLs, understand scam indicators, and get safe action recommendations.">
+<meta name="keywords" content="ai, ai-security, artificial-intelligence, cybersecurity, digital-safety, fastapi, fraud-detection, hackathon, hackathon-project, nextjs, nlp, ocr, phishing-detection, python, risk-assessment, scam-detection, security, social-engineering, threat-detection">
+<meta name="author" content="ScamLens">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta property="og:description" content="A simple Windows app that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/iyanhermawan12/ScamLens/releases">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta name="twitter:description" content="A simple Windows app that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; line-height:1.7;">
+<div style="max-width:900px; margin:0 auto; padding:24px 18px 56px;">
 
-    <main class="pt-28 sm:pt-36">
+<header style="text-align:center; padding:24px 0 10px;">
+<h1 style="font-size:clamp(1.8rem,4vw,2.6rem); line-height:1.2; margin:0 0 14px; color:#0f172a; letter-spacing:-0.5px;">🛡️ ScamLens - Spot Scams Before They Cost You</h1>
+<p style="font-size:1.08rem; margin:0 auto 22px; max-width:760px; color:#475569;">ScamLens is an explainable AI-powered scam detection platform that analyzes suspicious messages, screenshots, and URLs to identify scam indicators, explain the risks, and recommend safe actions.</p>
+<p style="margin:0 0 10px;"><a href="https://github.com/iyanhermawan12/ScamLens/releases" style="display:inline-block; padding:16px 28px; border-radius:14px; background:linear-gradient(135deg,#7c3aed,#0ea5e9,#14b8a6); color:#ffffff; text-decoration:none; font-weight:800; font-size:1.02rem; box-shadow:0 14px 30px rgba(14,165,233,0.28); letter-spacing:0.2px;">Download ScamLens for Windows</a></p>
+<p style="font-size:0.95rem; color:#64748b; margin:8px 0 0;">Visit this link to download the application.</p>
+</header>
 
-        <!-- Hero Section -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-            <div class="text-center max-w-4xl mx-auto">
-                <div class="inline-flex items-center space-x-2 px-4 py-2 bg-sky-100/80 text-brand-blue border border-sky-200 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-8">
-                    <span class="w-2 h-2 rounded-full bg-brand-blue animate-pulse"></span>
-                    <span>Ваши отзывы — ваш главный отдел продаж</span>
-                </div>
-                
-                <h1 class="text-4xl sm:text-6xl font-black text-slate-900 tracking-tight leading-[1.15] mb-8">
-                    Рейтинг ниже 4.5 <br class="hidden sm:block">
-                    <span class="gradient-text">убивает до 50% ваших продаж</span>
-                </h1>
-                
-                <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed mb-10 font-normal">
-                    Перед покупкой или визитом клиент первым делом проверяет отзывы. Я формирую безупречный онлайн-имидж бизнеса на всех ключевых картах и отзовиках.
-                </p>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🔍 What ScamLens Does</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens helps you look more closely at content that feels suspicious. It reviews messages, screenshots, and links, finds common scam signals, and explains the risk in everyday language. Instead of only showing a warning, it helps you understand why something looks unsafe and what you can do next.</p>
+<p style="margin:0; color:#334155;">You can use ScamLens when you receive an unexpected text, email, direct message, marketplace offer, delivery notice, bank alert, job offer, or link that asks you to act quickly. The app is designed to support everyday digital safety decisions on Windows.</p>
+</section>
 
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-                    <a href="https://max.ru/u/f9LHodD0cOJTUxKcO6hOfEfN1hzsKA6Q9ZY7I5OE8WGgI9IVYWYvtoTFOwY" target="_blank" class="w-full sm:w-auto flex items-center justify-center space-x-3 bg-brand-blue hover:bg-sky-700 text-white px-8 py-4 rounded-2xl font-bold text-base shadow-xl shadow-brand-blue/25 transition duration-300">
-                        <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M50.76 0c27.53 0 49.12 22.34 49.12 49.89S77.61 99.23 51.02 99.23c-9.43 0-14.01-1.33-21.37-6.54-.5-.36-1.2-.26-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03C7.19 80.53 0 71.18 0 49.61 0 21.3 23.22 0 50.76 0m.77 24.55c-13.07-.68-23.26 8.39-25.51 22.58-1.86 11.75 1.44 26.07 4.26 26.8 1.2.3 4.08-1.9 6.18-3.88.4-.37.99-.44 1.45-.15 3.27 2 6.97 3.5 11.05 3.71 13.42.7 25.3-9.8 26-23.21.71-13.42-10.01-25.14-23.43-25.85" fill="currentColor"/>
-                        </svg>
-                        <span>Рассчитать стоимость в Max</span>
-                    </a>
-                    <a href="#calculator" class="w-full sm:w-auto flex items-center justify-center space-x-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-8 py-4 rounded-2xl font-bold text-base transition duration-300">
-                        <span>Проверить потери</span>
-                        <i class="fa-solid fa-arrow-down text-sm text-slate-400"></i>
-                    </a>
-                </div>
-            </div>
-        </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">💡 Why This Matters</h2>
+<p style="margin:0 0 12px; color:#334155;">Scams often rely on pressure. A message may pretend to be from a bank, a delivery company, a government office, a landlord, an employer, or an online seller. It may ask you to click a link, pay a fee, share a code, confirm a password, or send personal details. These requests can be easy to miss when you are busy or worried.</p>
+<p style="margin:0; color:#334155;">ScamLens slows that moment down. It gives you a second opinion, highlights the parts that look risky, and helps you decide whether to trust, ignore, report, or verify the message through another channel.</p>
+</section>
 
-        <!-- Supported Platforms Section -->
-        <section id="platforms" class="bg-slate-900 py-16 text-white mb-28 border-y border-slate-800">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-xs font-bold uppercase tracking-widest text-slate-400 mb-10">
-                    Работаю со всеми популярными геосервисами и отзовиками РФ
-                </p>
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Яндекс Карты</div>
-                        <div class="text-xs text-slate-400 mt-1">Топовый трафик</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">2ГИС</div>
-                        <div class="text-xs text-slate-400 mt-1">Городская аудитория</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Google Maps</div>
-                        <div class="text-xs text-slate-400 mt-1">Органический поиск</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Авито</div>
-                        <div class="text-xs text-brand-lightCyan mt-1 font-semibold">Сложная модерация</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">ПроДокторов</div>
-                        <div class="text-xs text-brand-lightCyan mt-1 font-semibold">Медицинская ниша</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Отзовик</div>
-                        <div class="text-xs text-slate-400 mt-1">Репутация бренда</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">IRecommend</div>
-                        <div class="text-xs text-slate-400 mt-1">Обзоры и e-commerce</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Zoon</div>
-                        <div class="text-xs text-slate-400 mt-1">Сфера услуг</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Flamp</div>
-                        <div class="text-xs text-slate-400 mt-1">Региональный охват</div>
-                    </div>
-                    <div class="bg-slate-800/60 border border-slate-700/60 rounded-2xl p-4 text-center hover:border-brand-cyan transition">
-                        <div class="font-bold text-white text-base">Yell & другие</div>
-                        <div class="text-xs text-slate-400 mt-1">Специализированные</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">✨ Key Features</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens combines several checks in one place so you do not need to understand the technical details behind them.</p>
+<ul style="margin:0; padding-left:22px; color:#334155;">
+<li style="margin-bottom:8px;">Message analysis that reviews the text for pressure tactics, unusual requests, and known scam patterns.</li>
+<li style="margin-bottom:8px;">Screenshot analysis that reads text from an image so you can check a chat, email, or social post.</li>
+<li style="margin-bottom:8px;">URL inspection that looks at a link for signs of phishing or misleading web addresses.</li>
+<li style="margin-bottom:8px;">Plain-language explanations that describe why something may be risky.</li>
+<li style="margin-bottom:8px;">Risk indicators that point to urgency, payment requests, credential requests, impersonation, and social engineering.</li>
+<li style="margin-bottom:8px;">Safe action recommendations that suggest the next step, such as verifying through an official app or avoiding the link.</li>
+<li style="margin-bottom:0;">A clear risk summary that helps you compare the warning signs in one view.</li>
+</ul>
+</section>
 
-        <!-- Interactive Rating Calculator -->
-        <section id="calculator" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-            <div class="bg-white rounded-3xl p-6 sm:p-12 shadow-xl shadow-slate-200/60 border border-slate-200/80">
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Проверьте, сколько клиентов вы теряете</h2>
-                    <p class="text-slate-500 text-sm">Передвигайте ползунок, чтобы увидеть влияние рейтинга на поведение покупателей</p>
-                </div>
-                
-                <div class="space-y-10">
-                    <div>
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="font-bold text-slate-700 text-base">Текущий рейтинг карточки:</span>
-                            <span id="rating-val" class="text-3xl font-black text-brand-blue bg-sky-50 px-4 py-1 rounded-2xl border border-sky-100">3.5</span>
-                        </div>
-                        <input type="range" id="rating-slider" min="1" max="5" step="0.1" value="3.5" class="w-full appearance-none bg-transparent">
-                        <div class="flex justify-between text-xs text-slate-400 mt-3 font-bold uppercase">
-                            <span>Критично (1.0)</span>
-                            <span>Отлично (5.0)</span>
-                        </div>
-                    </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🧭 How ScamLens Helps You Decide</h2>
+<p style="margin:0 0 12px; color:#334155;">A scam warning is more useful when it tells you what to look at. ScamLens separates the content into simple parts: what was said, what link was included, what action was requested, and what risk signals appeared. That structure makes it easier to pause and check the message before you respond.</p>
+<p style="margin:0 0 12px; color:#334155;">For example, if a message says your account will be closed unless you confirm your password today, ScamLens can point out the urgency, the password request, and the link. It can explain that a real company usually does not ask for your password through a message link. The recommendation may be to open the company website or app yourself instead of using the link in the message.</p>
+<p style="margin:0; color:#334155;">The app is built for clarity. It does not expect you to read code, understand machine learning, or know security terms. It focuses on the practical question: does this look safe, and what should I do next?</p>
+</section>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-                        <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200/60">
-                            <div class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-2">Уровень доверия аудитории</div>
-                            <div id="trust-level" class="text-4xl font-black text-red-500 mb-2">20%</div>
-                            <p id="trust-desc" class="text-xs text-slate-500">8 из 10 потенциальных клиентов предпочтут конкурента с оценкой 4.7+</p>
-                        </div>
-                        <div class="p-6 bg-gradient-to-br from-navy-900 to-navy-800 rounded-2xl text-white shadow-lg">
-                            <div class="text-sky-300 text-xs font-bold uppercase tracking-wider mb-2">Слив рекламного бюджета</div>
-                            <div id="loss-level" class="text-4xl font-black text-white mb-2">80%</div>
-                            <p class="text-xs text-slate-300">Вы оплачиваете клики и рекламу, но люди отказываются от покупки из-за плохого рейтинга.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🚀 Download ScamLens for Windows</h2>
+<p style="margin:0 0 14px; color:#334155;">ScamLens is available from the official releases page. Visit this link to download the application.</p>
+<p style="margin:0 0 16px;"><a href="https://github.com/iyanhermawan12/ScamLens/releases" style="display:inline-block; padding:15px 26px; border-radius:12px; background:linear-gradient(135deg,#f59e0b,#ef4444,#8b5cf6); color:#ffffff; text-decoration:none; font-weight:800; box-shadow:0 12px 26px rgba(239,68,68,0.24);">Go to the ScamLens Download Page</a></p>
+<p style="margin:0; color:#334155;">The releases page is the place to get the Windows version. Use the link above and follow the download option shown there.</p>
+</section>
 
-        <!-- "What Are Your Thoughts?" Client Scenarios Section -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-28">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <span class="text-xs font-bold uppercase tracking-widest text-brand-blue bg-sky-50 px-3 py-1 rounded-lg border border-sky-100">Точки входа</span>
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-3 mb-3">Какие у вас сейчас мысли?</h2>
-                <p class="text-slate-600 text-base">Выберите вашу текущую ситуацию — под каждую из них есть рабочая стратегия</p>
-            </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🖥️ Using ScamLens on Windows</h2>
+<p style="margin:0 0 12px; color:#334155;">When you open ScamLens on your Windows computer, you are greeted with a simple starting area for the content you want to check. You can choose the type of item you have, such as a message, a screenshot, or a link. Then you add the content and ask ScamLens to review it.</p>
+<p style="margin:0 0 12px; color:#334155;">For a message, copy the text into the message box. For a screenshot, select the image from your computer. For a link, paste the web address into the link field. ScamLens reviews the content and shows the result in a way that is meant to be easy to read.</p>
+<p style="margin:0; color:#334155;">You can use ScamLens on your own for a quick check, or you can use it with a friend or family member when a message feels confusing. The app keeps the focus on explanation, so you can see the warning signs instead of guessing.</p>
+</section>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Card 1 -->
-                <div class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm hover:border-brand-blue hover:shadow-md transition duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-brand-blue group-hover:text-white transition flex items-center justify-center text-2xl mb-6">
-                            📉
-                        </div>
-                        <h4 class="font-black text-xl text-slate-900 mb-3">Низкий рейтинг</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed italic">
-                            «Хочу поднять общий балл до 4.8+, чтобы выделиться на фоне конкурентов в поиске»
-                        </p>
-                    </div>
-                </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScamLens - Spot Scams Before They Cost You</title>
+<meta name="description" content="ScamLens is an explainable AI-powered scam detection platform for Windows. Check suspicious messages, screenshots, and URLs, understand scam indicators, and get safe action recommendations.">
+<meta name="keywords" content="ai, ai-security, artificial-intelligence, cybersecurity, digital-safety, fastapi, fraud-detection, hackathon, hackathon-project, nextjs, nlp, ocr, phishing-detection, python, risk-assessment, scam-detection, security, social-engineering, threat-detection">
+<meta name="author" content="ScamLens">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://github.com/iyanhermawan12/ScamLens/releases">
+<meta property="og:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta property="og:description" content="A simple Windows application that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://github.com/iyanhermawan12/ScamLens/releases">
+<meta property="og:site_name" content="ScamLens">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ScamLens - Spot Scams Before They Cost You">
+<meta name="twitter:description" content="A simple Windows application that checks suspicious messages, screenshots, and links, then explains the risk in plain language.">
+</head>
+<body style="margin:0; background:#f4f7fb; color:#1f2937; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; line-height:1.7;">
+<div style="max-width:920px; margin:0 auto; padding:24px 18px 60px;">
 
-                <!-- Card 2 -->
-                <div class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm hover:border-brand-blue hover:shadow-md transition duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-brand-blue group-hover:text-white transition flex items-center justify-center text-2xl mb-6">
-                            🛑
-                        </div>
-                        <h4 class="font-black text-xl text-slate-900 mb-3">Много негатива</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed italic">
-                            «Нужно срочно перекрыть свежие плохие отзывы и вернуть доверие новых клиентов»
-                        </p>
-                    </div>
-                </div>
+<header style="text-align:center; padding:26px 0 12px;">
+<h1 style="font-size:clamp(1.85rem,4vw,2.7rem); line-height:1.2; margin:0 0 14px; color:#0f172a; letter-spacing:-0.5px;">🛡️ ScamLens - Spot Scams Before They Cost You</h1>
+<p style="font-size:1.08rem; margin:0 auto 22px; max-width:760px; color:#475569;">ScamLens is an explainable AI-powered scam detection platform that analyzes suspicious messages, screenshots, and URLs to identify scam indicators, explain the risks, and recommend safe actions.</p>
+<p style="margin:0 0 12px;"><a href="https://github.com/iyanhermawan12/ScamLens/releases" style="display:inline-block; padding:16px 28px; border-radius:14px; background:linear-gradient(135deg,#7c3aed,#0ea5e9,#14b8a6); color:#ffffff; text-decoration:none; font-weight:800; font-size:1.02rem; box-shadow:0 14px 30px rgba(14,165,233,0.28); letter-spacing:0.2px;">Download ScamLens for Windows</a></p>
+<p style="font-size:0.95rem; color:#64748b; margin:8px 0 0;">Visit this link to download the application.</p>
+</header>
 
-                <!-- Card 3 -->
-                <div class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm hover:border-brand-blue hover:shadow-md transition duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-brand-blue group-hover:text-white transition flex items-center justify-center text-2xl mb-6">
-                            ✨
-                        </div>
-                        <h4 class="font-black text-xl text-slate-900 mb-3">Свежие отзывы</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed italic">
-                            «Нужна постоянная активность: <strong class="text-slate-700 bg-sky-50 px-1 rounded">подчеркнуть преимущества</strong>, показать актуальные услуги и постоянный поток клиентов»
-                        </p>
-                    </div>
-                </div>
+<main>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🔍 What ScamLens Does</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens helps you look more closely at content that feels suspicious. It reviews messages, screenshots, and links, finds common scam signals, and explains the risk in everyday language. Instead of only showing a warning, it helps you understand why something looks unsafe and what you can do next.</p>
+<p style="margin:0; color:#334155;">You can use ScamLens when you receive an unexpected text, email, direct message, marketplace offer, delivery notice, bank alert, job offer, or link that asks you to act quickly. The application is designed to support everyday digital safety decisions on Windows.</p>
+</section>
 
-                <!-- Card 4 -->
-                <div class="bg-white p-8 rounded-3xl border-2 border-slate-100 shadow-sm hover:border-brand-blue hover:shadow-md transition duration-300 flex flex-col justify-between group">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-slate-100 group-hover:bg-brand-blue group-hover:text-white transition flex items-center justify-center text-2xl mb-6">
-                            🚀
-                        </div>
-                        <h4 class="font-black text-xl text-slate-900 mb-3">Новый бизнес</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed italic">
-                            «Только открылись, нужны первые отзывы и быстрый, безопасный старт карточек с нуля»
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">💡 Why People Use ScamLens</h2>
+<p style="margin:0 0 12px; color:#334155;">Scams often rely on pressure. A message may pretend to be from a bank, a delivery company, a government office, a landlord, an employer, or an online seller. It may ask you to click a link, pay a fee, share a code, confirm a password, or send personal details. These requests can be easy to miss when you are busy or worried.</p>
+<p style="margin:0; color:#334155;">ScamLens slows that moment down. It gives you a second opinion, highlights the parts that look risky, and helps you decide whether to trust, ignore, report, or verify the message through another channel.</p>
+</section>
 
-        <!-- Economics Section: ORM vs Advertising -->
-        <section class="gradient-bg py-24 text-white mb-28">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div>
-                        <div class="inline-block px-3 py-1 bg-sky-500/20 text-brand-lightCyan border border-sky-500/30 rounded-lg text-xs font-bold uppercase tracking-wider mb-6">
-                            Экономика маркетинга
-                        </div>
-                        <h2 class="text-3xl sm:text-5xl font-black leading-tight mb-6">
-                            ORM — это не расходы. <br>Это чистая экономия.
-                        </h2>
-                        <p class="text-slate-300 text-base sm:text-lg mb-8 leading-relaxed">
-                            Бизнесы часто сжигают сотни тысяч рублей в Яндекс Директ и таргете, удивляясь низкой конверсии. Перенаправление всего 15-20% бюджета в репутацию снижает стоимость заявки в разы.
-                        </p>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-4 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 font-bold">✓</div>
-                                <div>
-                                    <h4 class="font-bold text-white text-base">Высокий ROI</h4>
-                                    <p class="text-xs text-slate-400 mt-0.5">Вложения в отзывы окупаются с первых же удержанных клиентов.</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4 p-4 rounded-xl bg-slate-800/40 border border-slate-700/50">
-                                <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 font-bold">✓</div>
-                                <div>
-                                    <h4 class="font-bold text-white text-base">Долгосрочный эффект</h4>
-                                    <p class="text-xs text-slate-400 mt-0.5">Реклама останавливается сразу после окончания бюджета, а отзывы остаются надолго.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">✨ Key Features</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens combines several checks in one place so you do not need to understand the technical details behind them.</p>
+<ul style="margin:0; padding-left:22px; color:#334155;">
+<li style="margin-bottom:8px;">Message analysis that reviews text for pressure tactics, unusual requests, and known scam patterns.</li>
+<li style="margin-bottom:8px;">Screenshot analysis that reads text from an image so you can check a chat, email, or social post.</li>
+<li style="margin-bottom:8px;">URL inspection that looks at a link for signs of phishing or misleading web addresses.</li>
+<li style="margin-bottom:8px;">Plain-language explanations that describe why something may be risky.</li>
+<li style="margin-bottom:8px;">Risk indicators that point to urgency, payment requests, credential requests, impersonation, and social engineering.</li>
+<li style="margin-bottom:8px;">Safe action recommendations that suggest the next step, such as verifying through an official app or avoiding the link.</li>
+<li style="margin-bottom:0;">A clear risk summary that helps you compare the warning signs in one view.</li>
+</ul>
+</section>
 
-                    <div class="bg-slate-800/80 p-6 sm:p-8 rounded-3xl border border-slate-700 shadow-2xl">
-                        <h3 class="text-lg font-bold text-center mb-6">Сравнение затрат на привлечение клиента</h3>
-                        <div class="chart-container">
-                            <canvas id="budgetChart"></canvas>
-                        </div>
-                        <p class="text-center text-slate-400 text-xs mt-6 uppercase tracking-wider font-semibold">Средний бюджет на контекст vs ORM в месяц/разово</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🧭 How ScamLens Helps You Decide</h2>
+<p style="margin:0 0 12px; color:#334155;">A scam warning is more useful when it tells you what to look at. ScamLens separates the content into simple parts: what was said, what link was included, what action was requested, and what risk signals appeared. That structure makes it easier to pause and check the message before you respond.</p>
+<p style="margin:0 0 12px; color:#334155;">For example, if a message says your account will be closed unless you confirm your password today, ScamLens can point out the urgency, the password request, and the link. It can explain that a real company usually does not ask for your password through a message link. The recommendation may be to open the company website or app yourself instead of using the link in the message.</p>
+<p style="margin:0; color:#334155;">The application is built for clarity. It does not expect you to read code, understand machine learning, or know security terms. It focuses on the practical question: does this look safe, and what should I do next?</p>
+</section>
 
-        <!-- Pricing Section -->
-        <section id="pricing" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-28">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Прозрачный прайс-лист</h2>
-                <p class="text-slate-600 text-base">Честная стоимость за 1 прошедший модерацию отзыв. Без скрытых платежей.</p>
-            </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🧪 What You See in a Result</h2>
+<p style="margin:0 0 12px; color:#334155;">After you add a message, screenshot, or link, ScamLens shows a result that is designed to be read at a glance. The result may include a risk level, a short explanation, specific indicators, and a recommended safe action.</p>
+<p style="margin:0 0 12px; color:#334155;">The explanation is the important part. It connects the warning to the content in front of you. You might see that a message uses urgent language, asks for a payment method that is hard to reverse, includes a link with a misleading address, or requests information that a real organization would not ask for in that way.</p>
+<p style="margin:0; color:#334155;">This approach helps you learn as you go. Over time, the explanations make it easier to recognize common scam patterns in new messages.</p>
+</section>
 
-            <!-- Pricing Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                
-                <!-- Standard Maps -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg hover:shadow-xl transition flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-brand-blue flex items-center justify-center text-2xl mb-6">
-                            <i class="fa-solid fa-map-location-dot"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Геосервисы и Карты</h3>
-                        <p class="text-xs text-slate-500 mb-6">Основные точки контакта с локальными клиентами</p>
-                        
-                        <ul class="space-y-4 border-t border-slate-100 pt-6">
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">Яндекс Карты</span>
-                                <span class="font-bold text-slate-900">700 ₽ / шт</span>
-                            </li>
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">Google Maps</span>
-                                <span class="font-bold text-slate-900">700 ₽ / шт</span>
-                            </li>
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">2ГИС</span>
-                                <span class="font-bold text-slate-900">500 ₽ / шт</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🚀 Download ScamLens for Windows</h2>
+<p style="margin:0 0 14px; color:#334155;">ScamLens is available from the official releases page. Visit this link to download the application.</p>
+<p style="margin:0 0 16px;"><a href="https://github.com/iyanhermawan12/ScamLens/releases" style="display:inline-block; padding:15px 26px; border-radius:12px; background:linear-gradient(135deg,#f59e0b,#ef4444,#8b5cf6); color:#ffffff; text-decoration:none; font-weight:800; box-shadow:0 12px 26px rgba(239,68,68,0.24);">Go to the ScamLens Download Page</a></p>
+<p style="margin:0; color:#334155;">The releases page is the place to get the Windows version. Use the link above and follow the download option shown there.</p>
+</section>
 
-                <!-- Review Aggregators -->
-                <div class="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg hover:shadow-xl transition flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-sky-100 text-brand-blue flex items-center justify-center text-2xl mb-6">
-                            <i class="fa-solid fa-comments"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-slate-900 mb-2">Сайты-Отзовики</h3>
-                        <p class="text-xs text-slate-500 mb-6">Платформы пользовательских мнений и статей</p>
-                        
-                        <ul class="space-y-4 border-t border-slate-100 pt-6">
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">Отзовик</span>
-                                <span class="font-bold text-slate-900">700 ₽ / шт</span>
-                            </li>
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">IRecommend</span>
-                                <span class="font-bold text-slate-900">600 ₽ / шт</span>
-                            </li>
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">Zoon</span>
-                                <span class="font-bold text-slate-900">600 ₽ / шт</span>
-                            </li>
-                            <li class="flex justify-between items-center text-sm">
-                                <span class="font-medium text-slate-700">Flamp / Yell</span>
-                                <span class="font-bold text-slate-900">500 ₽ / шт</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">🖥️ Using ScamLens on Windows</h2>
+<p style="margin:0 0 12px; color:#334155;">When you open ScamLens on your Windows computer, you are greeted with a simple starting area for the content you want to check. You can choose the type of item you have, such as a message, a screenshot, or a link. Then you add the content and ask ScamLens to review it.</p>
+<p style="margin:0 0 12px; color:#334155;">For a message, copy the text into the message box. For a screenshot, select the image from your computer. For a link, paste the web address into the link field. ScamLens reviews the content and shows the result in a way that is meant to be easy to read.</p>
+<p style="margin:0; color:#334155;">You can use ScamLens on your own for a quick check, or you can use it with a friend or family member when a message feels confusing. The application keeps the focus on explanation, so you can see the warning signs instead of guessing.</p>
+</section>
 
-                <!-- Complex Platforms -->
-                <div class="bg-gradient-to-b from-navy-900 to-slate-900 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden flex flex-col justify-between border border-slate-700">
-                    <div class="absolute top-0 right-0 bg-gradient-to-l from-brand-cyan to-brand-blue text-[10px] uppercase font-black px-4 py-1.5 rounded-bl-xl tracking-wider">
-                        Сложная модерация
-                    </div>
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-brand-lightCyan flex items-center justify-center text-2xl mb-6">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Премиум & Нишевые</h3>
-                        <p class="text-xs text-slate-300 mb-6">Площадки с жесткими алгоритмами антифрода</p>
-                        
-                        <ul class="space-y-4 border-t border-slate-800 pt-6">
-                            <li class="flex justify-between items-center text-sm">
-                                <div>
-                                    <span class="font-semibold text-white block">ПроДокторов</span>
-                                    <span class="text-[10px] text-slate-400">С чеками и подтверждением</span>
-                                </div>
-                                <span class="font-black text-brand-lightCyan text-base">1 500 ₽</span>
-                            </li>
-                            <li class="flex justify-between items-center text-sm">
-                                <div>
-                                    <span class="font-semibold text-white block">Авито</span>
-                                    <span class="text-[10px] text-slate-400">Живые аккаунты реальных людей</span>
-                                </div>
-                                <span class="font-black text-brand-lightCyan text-base">1 500 ₽</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">👥 Who ScamLens Is For</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens is for anyone who wants a clearer way to check suspicious content. It is useful for people who receive unexpected messages, people who shop online, people who help family members with technology, and anyone who wants to understand why a message looks risky.</p>
+<p style="margin:0; color:#334155;">The application is especially helpful when a message creates urgency or asks for personal information. It gives you a structured way to review the content before you click, reply, pay, or share anything.</p>
+</section>
 
-            </div>
+<section style="background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; padding:24px; margin:18px 0; box-shadow:0 8px 24px rgba(15,23,42,0.06);">
+<h2 style="font-size:1.35rem; line-height:1.3; margin:0 0 12px; color:#0f172a;">⚙️ Behind the Scenes</h2>
+<p style="margin:0 0 12px; color:#334155;">ScamLens is built around AI-powered analysis, optical character recognition for screenshots, natural language processing for messages, and risk assessment for links and content. These technologies work together to turn confusing content into a readable explanation.</p>
+<p style="margin:0; color:#334155;">The project explores practical digital safety, fraud detection, phishing detection, and social engineering awareness in a form that is approachable for everyday users. It is designed as a helpful second opinion that makes scam indicators easier to see and understand.</p>
+</section>
+</main>
 
-            <!-- Custom Package Discount Callout -->
-            <div class="bg-gradient-to-r from-sky-50 to-cyan-50 border-2 border-dashed border-brand-blue/30 rounded-3xl p-8 text-center sm:flex items-center justify-between gap-6">
-                <div class="text-left mb-6 sm:mb-0">
-                    <span class="inline-block bg-brand-blue text-white text-[10px] font-black uppercase px-3 py-1 rounded-full mb-2">Выгодно</span>
-                    <h4 class="text-2xl font-black text-slate-900">Сборные пакеты со скидкой 10–15%</h4>
-                    <p class="text-sm text-slate-600 mt-1">При заказе комплекса публикаций подбираю индивидуальный пакет под задачи вашей ниши.</p>
-                </div>
-                <a href="https://max.ru/u/f9LHodD0cOJTUxKcO6hOfEfN1hzsKA6Q9ZY7I5OE8WGgI9IVYWYvtoTFOwY" target="_blank" class="shrink-0 bg-brand-blue hover:bg-sky-700 text-white font-bold px-8 py-4 rounded-2xl text-sm transition shadow-lg shadow-brand-blue/20">
-                    Получить расчет в Max
-                </a>
-            </div>
-        </section>
-
-        <!-- Cases Placeholder Section -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-28">
-            <div class="bg-gradient-to-br from-slate-900 to-navy-900 rounded-3xl p-8 sm:p-12 text-white border border-slate-800">
-                <div class="max-w-3xl mb-10">
-                    <span class="text-xs font-bold uppercase tracking-wider text-brand-lightCyan">Результаты работы</span>
-                    <h2 class="text-3xl font-black mt-2">Примеры роста показателей клиентов</h2>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl">
-                        <div class="text-xs text-slate-400 mb-2">Стоматологическая клиника</div>
-                        <div class="flex items-center space-x-3 mb-4">
-                            <span class="text-red-400 font-bold text-lg">3.4 ★</span>
-                            <i class="fa-solid fa-arrow-right text-slate-500 text-sm"></i>
-                            <span class="text-emerald-400 font-black text-2xl">4.9 ★</span>
-                        </div>
-                        <p class="text-xs text-slate-300">+65% новых обращений с Яндекс Карт за 2 месяца работы.</p>
-                    </div>
-
-                    <div class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl">
-                        <div class="text-xs text-slate-400 mb-2">Сеть автосервисов</div>
-                        <div class="flex items-center space-x-3 mb-4">
-                            <span class="text-amber-400 font-bold text-lg">3.8 ★</span>
-                            <i class="fa-solid fa-arrow-right text-slate-500 text-sm"></i>
-                            <span class="text-emerald-400 font-black text-2xl">4.8 ★</span>
-                        </div>
-                        <p class="text-xs text-slate-300">Перекрыт негатив конкурентов на 2ГИС и Google Maps.</p>
-                    </div>
-
-                    <div class="bg-slate-800/50 border border-slate-700/60 p-6 rounded-2xl">
-                        <div class="text-xs text-slate-400 mb-2">Интернет-магазин на Авито</div>
-                        <div class="flex items-center space-x-3 mb-4">
-                            <span class="text-slate-400 font-bold text-lg">0 отзывов</span>
-                            <i class="fa-solid fa-arrow-right text-slate-500 text-sm"></i>
-                            <span class="text-emerald-400 font-black text-2xl">5.0 ★ (40+)</span>
-                        </div>
-                        <p class="text-xs text-slate-300">Уверенное вхождение в нишу с высокой конверсией в сделки.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works Section -->
-        <section id="how-it-works" class="bg-slate-50 py-24 border-y border-slate-200/80 mb-28">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16">
-                    <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Как проходит работа</h2>
-                    <p class="text-slate-600 text-base">Безопасный и полностью прозрачный процесс от аудита до результата</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <!-- Step 1 -->
-                    <div class="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm relative">
-                        <div class="w-10 h-10 rounded-full bg-brand-blue text-white font-black flex items-center justify-center text-sm mb-6">01</div>
-                        <h4 class="font-bold text-lg text-slate-900 mb-2">Аудит карточек</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Разбираю вашу ситуацию на агрегаторах и подготавливаю 2 варианта пакетов с разными ценами на выбор под ваши задачи.</p>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div class="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm relative">
-                        <div class="w-10 h-10 rounded-full bg-brand-blue text-white font-black flex items-center justify-center text-sm mb-6">02</div>
-                        <h4 class="font-bold text-lg text-slate-900 mb-2">Согласование текстов</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Тексты пишутся профессиональными копирайтерами с учетом ваших пожеланий. Все правки вношу бесплатно.</p>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm relative">
-                        <div class="w-10 h-10 rounded-full bg-brand-blue text-white font-black flex items-center justify-center text-sm mb-6">03</div>
-                        <h4 class="font-bold text-lg text-slate-900 mb-2">Органическая выкладка</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Публикуем отзывы с живых аккаунтов реальных людей с вашего города и с соблюдением безопасных интервалов.</p>
-                    </div>
-
-                    <!-- Step 4 -->
-                    <div class="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm relative">
-                        <div class="w-10 h-10 rounded-full bg-brand-blue text-white font-black flex items-center justify-center text-sm mb-6">04</div>
-                        <h4 class="font-bold text-lg text-slate-900 mb-2">Прозрачный отчет</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Предоставляю удобную Google Таблицу, где вы в реальном времени можете наблюдать за процессом и результатом работы.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Advantages / Guarantees -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-28">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Почему выбирают TrueRatings</h2>
-                <p class="text-slate-600 text-base">Главный приоритет — безопасность вашей карточки и окупаемость вложений</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm">
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-6">
-                        <i class="fa-solid fa-user-check"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Живые аккаунты</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Публикация со старых профилей с историей и реальным поведенческим фактором. 0 банов.</p>
-                </div>
-
-                <div class="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm">
-                    <div class="w-12 h-12 rounded-2xl bg-sky-100 text-brand-blue flex items-center justify-center text-xl mb-6">
-                        <i class="fa-solid fa-pen-nib"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Профессиональный копирайтинг</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Тексты для отзывов пишут профессиональные копирайтеры под вашу нишу с учетом всех пожеланий. Бесплатные правки до полного утверждения.</p>
-                </div>
-
-                <div class="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm">
-                    <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-6">
-                        <i class="fa-solid fa-file-contract"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Официально</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Работаю как самозанятый/ИП. Предоставляю чеки, при объемах заключаем договор.</p>
-                </div>
-
-                <div class="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-sm">
-                    <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-6">
-                        <i class="fa-solid fa-hand-holding-dollar"></i>
-                    </div>
-                    <h4 class="font-bold text-lg text-slate-900 mb-2">Гарантия невыпадания</h4>
-                    <p class="text-xs text-slate-500 leading-relaxed">Если отзыв отклонен модерацией — делаю бесплатную замену или мгновенный возврат средств.</p>
-                </div>
-
-                <!-- 5th stretched card -->
-                <div class="md:col-span-2 p-8 rounded-3xl bg-gradient-to-r from-sky-50 to-cyan-50 border border-sky-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                    <div class="w-12 h-12 rounded-2xl bg-brand-blue text-white flex items-center justify-center text-xl shrink-0">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-lg text-slate-900 mb-1">Выгоднее и быстрее рекламы</h4>
-                        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                            Это в разы дешевле и быстрее, чем вливать сотни тысяч рублей в рекламу или годами пытаться исправить рейтинг своими силами, пока клиенты уходят к конкурентам.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section id="faq" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-28">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mb-4">Часто задаваемые вопросы</h2>
-                <p class="text-slate-600 text-base">Ответы на популярные опасения перед началом работы</p>
-            </div>
-
-            <div class="space-y-4">
-                <!-- FAQ 1 -->
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 font-bold text-slate-900 flex justify-between items-center focus:outline-none">
-                        <span>Не заблокируют ли карточку моей компании за накрутку?</span>
-                        <i class="fa-solid fa-chevron-down text-brand-blue transition transform duration-200"></i>
-                    </button>
-                    <div class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                        Исключено. Публикация происходит исключительно с живых аккаунтов реальных людей с соблюдением поведенческого фактора и гео-локации. На заспамленные бот-сети выкладка не производится.
-                    </div>
-                </div>
-
-                <!-- FAQ 2 -->
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 font-bold text-slate-900 flex justify-between items-center focus:outline-none">
-                        <span>Что если отзыв не пройдет модерацию или его удалят?</span>
-                        <i class="fa-solid fa-chevron-down text-brand-blue transition transform duration-200"></i>
-                    </button>
-                    <div class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                        Вы платите только за фактически прошедшие и закрепившиеся отзывы. В случае удаления в течение гарантийного периода производится бесплатная публикация замены либо возврат денег.
-                    </div>
-                </div>
-
-                <!-- FAQ 3 -->
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 font-bold text-slate-900 flex justify-between items-center focus:outline-none">
-                        <span>Кто пишет тексты отзывов? Можно ли их согласовать?</span>
-                        <i class="fa-solid fa-chevron-down text-brand-blue transition transform duration-200"></i>
-                    </button>
-                    <div class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                        Тексты готовит автор с учетом спецификаций вашей компании. Все тексты бесплатно передаются вам на утверждение перед публикацией. Вы также можете предоставить свои варианты.
-                    </div>
-                </div>
-
-                <!-- FAQ 4 -->
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 font-bold text-slate-900 flex justify-between items-center focus:outline-none">
-                        <span>Как быстро появится результат и вырастет рейтинг?</span>
-                        <i class="fa-solid fa-chevron-down text-brand-blue transition transform duration-200"></i>
-                    </button>
-                    <div class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                        Первые публикации появляются уже в течение 2–4 дней после согласования. График выкладки распределяется плавно, чтобы динамика выглядела максимально естественно для модераторов алгоритмов.
-                    </div>
-                </div>
-
-                <!-- FAQ 5 -->
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 font-bold text-slate-900 flex justify-between items-center focus:outline-none">
-                        <span>Можно ли сначала заказать пробную партию?</span>
-                        <i class="fa-solid fa-chevron-down text-brand-blue transition transform duration-200"></i>
-                    </button>
-                    <div class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
-                        Да, конечно! По итогу аудита я всегда предлагаю два разных пакета по стоимости, чтобы вы могли выбрать наиболее комфортный вариант. Базовый стартовый пакет обычно начинается от 7 000 ₽. И даже минимальный пакет подбирается так, чтобы закрыть ваши реальные приоритетные задачи на картах. Кроме того, вы всегда можете сразу написать мне удобный для вас бюджет — я соберу оптимальную сборку под него.
-                    </div>
-                </div>
-
-                <!-- FAQ 6 -->
-                <div class="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-sm">
-                    <button onclick="toggleFaq(this)" class="w-full text-left p-6 font-bold text-slate-900 flex justify-between items-center focus:outline-none">
-                        <span>Есть ли скидки или бонусы?</span>
-                        <i class="fa-solid fa-chevron-down text-brand-blue transition transform duration-200"></i>
-                    </button>
-                    <div class="hidden px-6 pb-6 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4 space-y-2">
-                        <p><strong>1. Пакетные скидки:</strong> При заказе готового сборного комплекса стоимость выкладки сразу включает выгоду от 10% до 15% относительно розничного прайса.</p>
-                        <p><strong>2. Реферальная программа:</strong> Порекомендуйте TrueRatings коллегам или партнерам. Если они заказывают услугу по вашей рекомендации, они получают дополнительную скидку 5% (которая суммируется со всеми скидками!), а вы получаете либо такую же скидку в 5% на ваш следующий заказ, либо 1 дополнительный бесплатный отзыв на любой площадке на ваш выбор (за исключением категорий повышенной сложности: Авито и ПроДокторов).</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact & Final CTA Section -->
-        <section id="contact" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-            <div class="bg-gradient-to-br from-brand-blue to-navy-900 rounded-3xl p-8 sm:p-12 text-white text-center shadow-2xl relative overflow-hidden">
-                <h2 class="text-3xl sm:text-4xl font-black mb-4">Готовы поднять рейтинг компании?</h2>
-                <p class="text-sky-100 text-sm sm:text-base max-w-xl mx-auto mb-10">
-                    Получите бесплатный аудит ваших карточек с детальным разбором точек роста и расчетом индивидуальной сметы.
-                </p>
-
-                <div class="space-y-4 max-w-md mx-auto text-left">
-                    
-                    <!-- 1. Main Priority: Max Profile -->
-                    <a href="https://max.ru/u/f9LHodD0cOJTUxKcO6hOfEfN1hzsKA6Q9ZY7I5OE8WGgI9IVYWYvtoTFOwY" target="_blank" class="flex items-center justify-between bg-white text-slate-900 p-4 sm:p-5 rounded-2xl font-bold hover:bg-sky-50 transition shadow-xl group border-2 border-brand-cyan">
-                        <div class="flex items-center space-x-3.5">
-                            <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-brand-blue to-brand-cyan text-white flex items-center justify-center shadow-md">
-                                <svg class="w-6 h-6 fill-current shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M50.76 0c27.53 0 49.12 22.34 49.12 49.89S77.61 99.23 51.02 99.23c-9.43 0-14.01-1.33-21.37-6.54-.5-.36-1.2-.26-1.63.19-5.66 6.04-20.17 10.28-20.83 2.03C7.19 80.53 0 71.18 0 49.61 0 21.3 23.22 0 50.76 0m.77 24.55c-13.07-.68-23.26 8.39-25.51 22.58-1.86 11.75 1.44 26.07 4.26 26.8 1.2.3 4.08-1.9 6.18-3.88.4-.37.99-.44 1.45-.15 3.27 2 6.97 3.5 11.05 3.71 13.42.7 25.3-9.8 26-23.21.71-13.42-10.01-25.14-23.43-25.85" fill="currentColor"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-base font-black">Заказать аудит в Max</span>
-                                    <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Основной канал</span>
-                                </div>
-                                <div class="text-xs text-slate-500 font-normal">Быстрый ответ • Профиль Max</div>
-                            </div>
-                        </div>
-                        <i class="fa-solid fa-arrow-right text-brand-blue group-hover:translate-x-1 transition text-lg"></i>
-                    </a>
-
-                    <!-- 2. Email Contact -->
-                    <a href="mailto:contact@trueratings.ru" class="flex items-center justify-between bg-slate-900/40 hover:bg-slate-900/60 border border-slate-700/60 p-3.5 rounded-2xl text-xs text-slate-300 transition group">
-                        <div class="flex items-center space-x-3">
-                            <i class="fa-solid fa-envelope text-sky-400 text-lg"></i>
-                            <span>Email: <strong class="text-white">contact@trueratings.ru</strong></span>
-                        </div>
-                        <i class="fa-solid fa-chevron-right text-slate-500 group-hover:translate-x-0.5 transition"></i>
-                    </a>
-
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-slate-950 py-12 border-t border-slate-900 text-center text-slate-500 text-xs">
-        <div class="max-w-7xl mx-auto px-4">
-            <p class="font-bold text-slate-400 uppercase tracking-widest mb-2">© TrueRatings ORM — Экспертное управление репутацией</p>
-            <p>contact@trueratings.ru • Конфиденциально • Работа с юридическими и физическими лицами</p>
-        </div>
-    </footer>
-
-    <!-- Scripts Logic -->
-    <script>
-        // 1. Calculator Logic
-        const slider = document.getElementById('rating-slider');
-        const ratingVal = document.getElementById('rating-val');
-        const trustLevel = document.getElementById('trust-level');
-        const trustDesc = document.getElementById('trust-desc');
-        const lossLevel = document.getElementById('loss-level');
-
-        slider.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            ratingVal.innerText = val.toFixed(1);
-            
-            let trust, loss, desc;
-            if (val >= 5.0) {
-                trust = 95; loss = 5;
-                trustLevel.className = "text-4xl font-black text-emerald-500 mb-2";
-                desc = "Идеальный рейтинг. Максимальный уровень доверия и непрерывный поток горячих клиентов.";
-            } else if (val >= 4.9) {
-                trust = 80; loss = 20;
-                trustLevel.className = "text-4xl font-black text-emerald-500 mb-2";
-                desc = "Отличный показатель, но 1 из 5 клиентов всё ещё уходит сравнивать предложения с оценкой 5.0.";
-            } else if (val >= 4.8) {
-                trust = 70; loss = 30;
-                trustLevel.className = "text-4xl font-black text-sky-500 mb-2";
-                desc = "Хороший результат, но 30% покупателей сомневаются и отдают выбор конкурентам с безупречным рейтингом.";
-            } else if (val >= 4.5) {
-                trust = 50; loss = 50;
-                trustLevel.className = "text-4xl font-black text-amber-500 mb-2";
-                desc = "Опасная зона: каждый второй клиент уходит к конкурентам с оценкой 4.8+.";
-            } else if (val >= 4.0) {
-                trust = 20; loss = 80;
-                trustLevel.className = "text-4xl font-black text-red-500 mb-2";
-                desc = "Катастрофическая потеря конверсии. 8 из 10 клиентов отказываются от покупки.";
-            } else if (val >= 3.5) {
-                trust = 8; loss = 92;
-                trustLevel.className = "text-4xl font-black text-red-600 mb-2";
-                desc = "Прямой слив рекламного бюджета. Вы тратите деньги на рекламу впустую.";
-            } else {
-                trust = 2; loss = 98;
-                trustLevel.className = "text-4xl font-black text-red-700 mb-2";
-                desc = "Тотальное недоверие. Бизнес воспринимается клиентами как крайне ненадёжный.";
-            }
-
-            trustLevel.innerText = trust + '%';
-            lossLevel.innerText = loss + '%';
-            trustDesc.innerText = desc;
-        });
-
-        // 2. Chart.js Logic
-        function initChart() {
-            const ctx = document.getElementById('budgetChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Контекст / Таргет', 'Комплекс ORM'],
-                    datasets: [{
-                        label: 'Затраты в месяц',
-                        data: [100000, 20000],
-                        backgroundColor: ['#475569', '#0284c7'],
-                        borderRadius: 12
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.raw.toLocaleString('ru-RU') + ' ₽';
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: { 
-                            beginAtZero: true, 
-                            display: true,
-                            ticks: { 
-                                color: '#94a3b8',
-                                font: { size: 10 },
-                                callback: function(value) {
-                                    return value >= 1000 ? (value / 1000) + 'k ₽' : value + ' ₽';
-                                }
-                            },
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' }
-                        },
-                        x: { 
-                            ticks: { color: '#f8fafc', font: { weight: 'bold', size: 12 } },
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
-        }
-
-        // 3. FAQ Accordion Logic
-        function toggleFaq(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('i');
-            
-            content.classList.toggle('hidden');
-            icon.classList.toggle('rotate-180');
-        }
-
-        window.onload = initChart;
-    </script>
+</div>
 </body>
 </html>
